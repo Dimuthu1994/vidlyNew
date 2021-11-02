@@ -43,8 +43,6 @@ function Movies(props) {
           items={genres}
           onItemSelect={handleGenreSelect}
           selectGenre={selectGenre}
-          textProperty="name"
-          valueProperty="_id"
         />
       </div>
 
