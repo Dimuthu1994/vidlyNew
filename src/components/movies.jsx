@@ -1,9 +1,11 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./like";
+import Pagination from "./pagination";
 
 function Movies(props) {
   let [movies, setMovies] = useState(getMovies());
+  let [currentPage, setCurrentPage] = useState(1);
 
   let handleDelete = (id) => {
     const fMovies = movies.filter((m) => m._id !== id);
@@ -16,6 +18,10 @@ function Movies(props) {
     lmovies[index] = { ...lmovies[index] };
     lmovies[index].liked = !lmovies[index].liked;
     setMovies(lmovies);
+  };
+
+  let handlePageChange = (page) => {
+    setCurrentPage(page);
   };
 
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
@@ -55,6 +61,13 @@ function Movies(props) {
           ))}
         </tbody>
       </table>
+
+      <Pagination
+        itemsCount={movies.length}
+        pageSize={4}
+        onPageChange={handlePageChange}
+        currentPage={currentPage}
+      />
     </>
   );
 }
