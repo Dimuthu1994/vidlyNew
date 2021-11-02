@@ -2,10 +2,12 @@ import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import Like from "./like";
 import Pagination from "./pagination";
+import { paginate } from "../utils/paginate";
 
 function Movies(props) {
   let [movies, setMovies] = useState(getMovies());
   let [currentPage, setCurrentPage] = useState(1);
+  let pageSize = 4;
 
   let handleDelete = (id) => {
     const fMovies = movies.filter((m) => m._id !== id);
@@ -25,6 +27,7 @@ function Movies(props) {
   };
 
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
+  const moviesPaginate = paginate(movies, currentPage, pageSize);
   return (
     <>
       <p>Showing {movies.length} in the database</p>
@@ -40,7 +43,7 @@ function Movies(props) {
           </tr>
         </thead>
         <tbody>
-          {movies.map((movie) => (
+          {moviesPaginate.map((movie) => (
             <tr key={movie._id}>
               <td>{movie.title}</td>
               <td>{movie.genre.name}</td>
