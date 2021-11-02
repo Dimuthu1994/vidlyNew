@@ -38,14 +38,7 @@ function Movies(props) {
     setCurrentPage(1);
   };
 
-  let handleSort = (path) => {
-    let sortColumnClone = { ...sortColumn };
-    if (sortColumnClone.path === path)
-      sortColumnClone.order = sortColumnClone.order === "asc" ? "desc" : "asc";
-    else {
-      sortColumnClone.path = path;
-      sortColumnClone.order = "asc";
-    }
+  let handleSort = (sortColumnClone) => {
     setSortColumn(sortColumnClone);
   };
 
@@ -79,6 +72,7 @@ function Movies(props) {
           onLike={handleLike}
           onDelete={handleDelete}
           onSort={handleSort}
+          sortColumn={sortColumn}
         />
 
         <Pagination
