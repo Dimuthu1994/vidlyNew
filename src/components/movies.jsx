@@ -1,5 +1,6 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
+import Like from "./like";
 
 function Movies(props) {
   let [movies, setMovies] = useState(getMovies());
@@ -7,6 +8,14 @@ function Movies(props) {
   let handleDelete = (id) => {
     const fMovies = movies.filter((m) => m._id !== id);
     setMovies(fMovies);
+  };
+
+  let handleLike = (movie) => {
+    let lmovies = [...movies];
+    const index = lmovies.indexOf(movie);
+    lmovies[index] = { ...lmovies[index] };
+    lmovies[index].liked = !lmovies[index].liked;
+    setMovies(lmovies);
   };
 
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
@@ -21,6 +30,7 @@ function Movies(props) {
             <th>Stock</th>
             <th>Rate</th>
             <th />
+            <th />
           </tr>
         </thead>
         <tbody>
@@ -30,6 +40,9 @@ function Movies(props) {
               <td>{movie.genre.name}</td>
               <td>{movie.numberInStock}</td>
               <td>{movie.dailyRentalRate}</td>
+              <td>
+                <Like liked={movie.liked} onToggle={() => handleLike(movie)} />
+              </td>
               <td>
                 <button
                   onClick={() => handleDelete(movie._id)}
