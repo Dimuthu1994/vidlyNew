@@ -32,10 +32,16 @@ function Movies(props) {
 
   let handleGenreSelect = (genre) => {
     setSelectGenre(genre);
+    setCurrentPage(1);
   };
 
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
-  const moviesPaginate = paginate(movies, currentPage, pageSize);
+
+  const filteredMovies =
+    selectGenre && selectGenre._id
+      ? movies.filter((m) => m.genre._id === selectGenre._id)
+      : movies;
+  const moviesPaginate = paginate(filteredMovies, currentPage, pageSize);
   return (
     <div className="row">
       <div className="col-3">
@@ -47,7 +53,7 @@ function Movies(props) {
       </div>
 
       <div className="col">
-        <p>Showing {movies.length} in the database</p>
+        <p>Showing {filteredMovies.length} in the database</p>
         <table className="table">
           <thead>
             <tr>
@@ -86,7 +92,7 @@ function Movies(props) {
         </table>
 
         <Pagination
-          itemsCount={movies.length}
+          itemsCount={filteredMovies.length}
           pageSize={4}
           onPageChange={handlePageChange}
           currentPage={currentPage}
