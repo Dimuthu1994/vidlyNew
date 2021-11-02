@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import { getMovies } from "../services/fakeMovieService";
 import { getGenres } from "../services/fakeGenreService";
-
+import _ from "lodash";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
@@ -12,6 +12,7 @@ function Movies(props) {
   let [genres, setGenres] = useState(getGenres());
   let [currentPage, setCurrentPage] = useState(1);
   let [selectGenre, setSelectGenre] = useState(null);
+  let [sortColumn, setSortColumn] = useState({ path: "title", order: "asc" });
   let pageSize = 4;
 
   let handleDelete = (id) => {
@@ -37,13 +38,30 @@ function Movies(props) {
     setCurrentPage(1);
   };
 
+  let handleSort = (path) => {
+    let sortColumnClone = { ...sortColumn };
+    if (sortColumnClone.path === path)
+      sortColumnClone.order = sortColumnClone.order === "asc" ? "desc" : "asc";
+    else {
+      sortColumnClone.path = path;
+      sortColumnClone.order = "asc";
+    }
+    setSortColumn(sortColumnClone);
+  };
+
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
 
   const filteredMovies =
     selectGenre && selectGenre._id
       ? movies.filter((m) => m.genre._id === selectGenre._id)
       : movies;
-  const moviesPaginate = paginate(filteredMovies, currentPage, pageSize);
+
+  const sorted = _.orderBy(
+    filteredMovies,
+    [sortColumn.path],
+    [sortColumn.order]
+  );
+  const moviesPaginate = paginate(sorted, currentPage, pageSize);
   return (
     <div className="row">
       <div className="col-3">
@@ -55,15 +73,16 @@ function Movies(props) {
       </div>
 
       <div className="col">
-        <p>Showing {filteredMovies.length} in the database</p>
+        <p>Showing {sorted.length} in the database</p>
         <MoviesTable
           moviesPaginate={moviesPaginate}
           onLike={handleLike}
           onDelete={handleDelete}
+          onSort={handleSort}
         />
 
         <Pagination
-          itemsCount={filteredMovies.length}
+          itemsCount={sorted.length}
           pageSize={4}
           onPageChange={handlePageChange}
           currentPage={currentPage}
