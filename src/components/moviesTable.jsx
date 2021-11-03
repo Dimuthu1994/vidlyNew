@@ -1,29 +1,20 @@
 import React from "react";
 import Like from "./common/like";
+import TableHeader from "./common/tableHeader";
 function MoviesTable({ moviesPaginate, onLike, onDelete, onSort, sortColumn }) {
-  let raiseSort = (path) => {
-    let sortColumnClone = { ...sortColumn };
-    if (sortColumnClone.path === path)
-      sortColumnClone.order = sortColumnClone.order === "asc" ? "desc" : "asc";
-    else {
-      sortColumnClone.path = path;
-      sortColumnClone.order = "asc";
-    }
-    onSort(sortColumnClone);
-  };
+  //change from table to table
+  let columns = [
+    { path: "title", label: "Title" },
+    { path: "genre.name", label: "Genre" },
+    { path: "numberInStock", label: "Stock" },
+    { path: "dailyRentalRate", label: "Rate" },
+    { key: "Like" },
+    { key: "delete" },
+  ];
 
   return (
     <table className="table">
-      <thead>
-        <tr>
-          <th onClick={() => raiseSort("title")}>Title</th>
-          <th onClick={() => raiseSort("genre.name")}>Genre</th>
-          <th onClick={() => raiseSort("numberInStock")}>Stock</th>
-          <th onClick={() => raiseSort("dailyRentalRate")}>Rate</th>
-          <th />
-          <th />
-        </tr>
-      </thead>
+      <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
       <tbody>
         {moviesPaginate.map((movie) => (
           <tr key={movie._id}>
