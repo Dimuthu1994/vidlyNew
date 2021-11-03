@@ -11,7 +11,7 @@ function LoginForm(props) {
 
   let handleChange = (e) => {
     const accountNew = { ...account };
-    accountNew.username = e.currentTarget.value;
+    accountNew[e.currentTarget.name] = e.currentTarget.value;
     setAccount(accountNew);
   };
 
@@ -24,6 +24,7 @@ function LoginForm(props) {
           <input
             value={account.username}
             onChange={handleChange}
+            name="username"
             id="username"
             type="text"
             className="form-control"
@@ -31,7 +32,14 @@ function LoginForm(props) {
         </div>
         <div className="form-group">
           <label htmlFor="password">Password</label>
-          <input id="password" type="text" className="form-control" />
+          <input
+            value={account.password}
+            onChange={handleChange}
+            name="password"
+            id="password"
+            type="text"
+            className="form-control"
+          />
         </div>
         <button className="btn btn-primary">Login</button>
       </form>
