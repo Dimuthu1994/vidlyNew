@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import Input from "./common/input";
 
 function LoginForm(props) {
   const [account, setAccount] = useState({ username: "", password: "" });
@@ -19,28 +20,20 @@ function LoginForm(props) {
     <div>
       <h1>Login</h1>
       <form onSubmit={handleSubmit}>
-        <div className="form-group">
-          <label htmlFor="username">Username</label>
-          <input
-            value={account.username}
-            onChange={handleChange}
-            name="username"
-            id="username"
-            type="text"
-            className="form-control"
-          />
-        </div>
-        <div className="form-group">
-          <label htmlFor="password">Password</label>
-          <input
-            value={account.password}
-            onChange={handleChange}
-            name="password"
-            id="password"
-            type="text"
-            className="form-control"
-          />
-        </div>
+        <Input
+          name="username"
+          label="Username"
+          value={account.username}
+          onChange={handleChange}
+        />
+
+        <Input
+          name="password"
+          label="Password"
+          value={account.password}
+          onChange={handleChange}
+        />
+
         <button className="btn btn-primary">Login</button>
       </form>
     </div>
