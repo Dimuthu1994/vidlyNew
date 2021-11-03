@@ -7,13 +7,19 @@ function TableBody({ data, columns }) {
     return _.get(item, column.path);
   };
 
+  let createUniqueKey = (item, column) => {
+    return item._id + (column.path || column.key);
+  };
+
   return (
     <tbody>
       {data.map((item) => (
-        <tr>
-          {/* we cant use braket notation for nested properies insted we use lodash */}
+        <tr key={item._id}>
+          {/* we cant use braket notation for nested properies insted we use lodash reason{item['genre.name']},otherwise we can use <td>{item[column.path]}</td> */}
           {columns.map((column) => (
-            <td>{renderCell(item, column)}</td>
+            <td key={createUniqueKey(item, column)}>
+              {renderCell(item, column)}
+            </td>
           ))}
         </tr>
       ))}
