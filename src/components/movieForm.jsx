@@ -1,7 +1,17 @@
 import React from "react";
 
-function MovieForm(props) {
-  return <h1>MovieForm</h1>;
+function MovieForm({ match, history }) {
+  return (
+    <div>
+      <h1>MovieForm {match.params.id}</h1>
+      <button
+        className="btn btn-primary"
+        onClick={() => history.replace("/movies")}
+      >
+        Save
+      </button>
+    </div>
+  );
 }
 
 export default MovieForm;
