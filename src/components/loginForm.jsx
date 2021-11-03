@@ -9,9 +9,9 @@ function LoginForm(props) {
     console.log("submitted");
   };
 
-  let handleChange = (e) => {
+  let handleChange = ({ currentTarget: input }) => {
     const accountNew = { ...account };
-    accountNew[e.currentTarget.name] = e.currentTarget.value;
+    accountNew[input.name] = input.value;
     setAccount(accountNew);
   };
 
