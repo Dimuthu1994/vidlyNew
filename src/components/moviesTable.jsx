@@ -1,5 +1,7 @@
 import React from "react";
 import Like from "./common/like";
+
+import TableBody from "./common/tabeBody";
 import TableHeader from "./common/tableHeader";
 function MoviesTable({ moviesPaginate, onLike, onDelete, onSort, sortColumn }) {
   //change from table to table
@@ -8,34 +10,35 @@ function MoviesTable({ moviesPaginate, onLike, onDelete, onSort, sortColumn }) {
     { path: "genre.name", label: "Genre" },
     { path: "numberInStock", label: "Stock" },
     { path: "dailyRentalRate", label: "Rate" },
-    { key: "Like" },
-    { key: "delete" },
+    {
+      key: "Like",
+      content: (movie) => (
+        <Like liked={movie.liked} onToggle={() => onLike(movie)} />
+      ),
+    },
+    {
+      key: "delete",
+      content: (movie) => (
+        <button
+          onClick={() => onDelete(movie._id)}
+          className="btn btn-danger btn-sm"
+        >
+          Delete
+        </button>
+      ),
+    },
   ];
 
   return (
     <table className="table">
       <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
-      <tbody>
-        {moviesPaginate.map((movie) => (
-          <tr key={movie._id}>
-            <td>{movie.title}</td>
-            <td>{movie.genre.name}</td>
-            <td>{movie.numberInStock}</td>
-            <td>{movie.dailyRentalRate}</td>
-            <td>
-              <Like liked={movie.liked} onToggle={() => onLike(movie)} />
-            </td>
-            <td>
-              <button
-                onClick={() => onDelete(movie._id)}
-                className="btn btn-danger btn-sm"
-              >
-                Delete
-              </button>
-            </td>
-          </tr>
-        ))}
-      </tbody>
+
+      <TableBody
+        data={moviesPaginate}
+        onLike={onLike}
+        onDelete={onDelete}
+        columns={columns}
+      />
     </table>
   );
 }
