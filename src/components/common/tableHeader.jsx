@@ -12,6 +12,12 @@ function TableHeader({ onSort, sortColumn, columns }) {
     onSort(sortColumnClone);
   };
 
+  let renderSortIcon = (column) => {
+    if (column.path !== sortColumn.path) return null;
+    if (sortColumn.order === "asc") return <i className="fa fa-sort-asc"></i>;
+    return <i className="fa fa-sort-desc"></i>;
+  };
+
   //columns:array
   //sortColumn :obj
   //onsort :func
@@ -20,10 +26,11 @@ function TableHeader({ onSort, sortColumn, columns }) {
       <tr>
         {columns.map((column) => (
           <th
+            className="clickable"
             key={column.path || column.key}
             onClick={() => raiseSort(column.path)}
           >
-            {column.label}
+            {column.label} {renderSortIcon(column)}
           </th>
         ))}
       </tr>
