@@ -1,8 +1,7 @@
 import React from "react";
 import Like from "./common/like";
+import Table from "./common/table";
 
-import TableBody from "./common/tabeBody";
-import TableHeader from "./common/tableHeader";
 function MoviesTable({ moviesPaginate, onLike, onDelete, onSort, sortColumn }) {
   //change from table to table
   let columns = [
@@ -30,16 +29,12 @@ function MoviesTable({ moviesPaginate, onLike, onDelete, onSort, sortColumn }) {
   ];
 
   return (
-    <table className="table">
-      <TableHeader onSort={onSort} sortColumn={sortColumn} columns={columns} />
-
-      <TableBody
-        data={moviesPaginate}
-        onLike={onLike}
-        onDelete={onDelete}
-        columns={columns}
-      />
-    </table>
+    <Table
+      columns={columns}
+      data={moviesPaginate}
+      sortColumn={sortColumn}
+      onSort={onSort}
+    />
   );
 }
 
