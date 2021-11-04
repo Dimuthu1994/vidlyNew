@@ -23,17 +23,31 @@ function LoginForm(props) {
     const accountNew = { ...account };
     accountNew[input.name] = input.value;
     setAccount(accountNew);
+
+    const errorsNew = { ...errors };
+    const errorMessage = validateProperty(input);
+    if (errorMessage) errorsNew[input.name] = errorMessage;
+    else delete errorsNew[input.name];
+    setErrors(errorsNew);
   };
 
   let validate = () => {
-    const result = Joi.validate(account, schema, { abortEarly: false });
+    const option = { abortEarly: false };
+    const { error } = Joi.validate(account, schema, option);
 
-    if (!result.error) return null;
+    if (!error) return null;
 
     const errors = {};
-    for (let item of result.error.details) errors[item.path[0]] = item.message;
+    for (let item of error.details) errors[item.path[0]] = item.message;
 
     return errors;
+  };
+
+  let validateProperty = ({ name, value }) => {
+    const obj = { [name]: value };
+    const schemaProperty = { [name]: schema[name] };
+    const { error } = Joi.validate(obj, schemaProperty);
+    return error ? error.details[0].message : null;
   };
 
   return (
