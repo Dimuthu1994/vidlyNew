@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import Input from "./common/input";
-import useForm from "./common/form";
+import Form from "./common/form";
 import Joi from "joi-browser";
 
 function LoginForm(props) {
@@ -9,7 +9,7 @@ function LoginForm(props) {
     username: Joi.string().required().label("Username"),
     password: Joi.string().required().label("Password"),
   };
-  const { validate, handleSubmit, handleChange, data, errors } = useForm({
+  const { handleSubmit, handleChange, data, errors, validate } = Form({
     dataInit,
     schema,
   });
@@ -37,12 +37,13 @@ function LoginForm(props) {
           value={data.password}
           onChange={handleChange}
           error={errors.password}
+          type={"password"}
         />
 
         <button
+          onClick={doSubmit}
           disabled={validate()}
           className="btn btn-primary"
-          onClick={doSubmit}
         >
           Login
         </button>

@@ -1,7 +1,7 @@
 import React, { useState } from "react";
 import Joi from "joi-browser";
 
-function useForm({ dataInit, schema }) {
+function Form({ dataInit, schema }) {
   const [data, setData] = useState(dataInit);
   const [errors, setErrors] = useState({});
 
@@ -51,4 +51,4 @@ function useForm({ dataInit, schema }) {
   };
 }
 
-export default useForm;
+export default Form;
