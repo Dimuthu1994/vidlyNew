@@ -3,7 +3,7 @@ import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
 
-function RoginForm(props) {
+function RegisterForm(props) {
   const [dataInit, setDataInit] = useState({
     username: "",
     password: "",
@@ -65,4 +65,4 @@ function RoginForm(props) {
   );
 }
 
-export default RoginForm;
+export default RegisterForm;

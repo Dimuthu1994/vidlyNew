@@ -48,6 +48,7 @@ function Form({ dataInit, schema }) {
     validate,
     data,
     errors,
+    setData,
   };
 }
 
