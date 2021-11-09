@@ -5,6 +5,7 @@ import _ from "lodash";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
 import ListGroup from "./common/listGroup";
+import SearchBox from "./common/searchBox";
 import MoviesTable from "./moviesTable";
 import { Link } from "react-router-dom";
 
@@ -15,6 +16,8 @@ function Movies(props) {
   let [currentPage, setCurrentPage] = useState(1);
   let [selectGenre, setSelectGenre] = useState(null);
   let [sortColumn, setSortColumn] = useState({ path: "title", order: "asc" });
+  let [searchQuery, setSearchQuery] = useState("");
+
   let pageSize = 4;
 
   useEffect(() => {
@@ -43,6 +46,7 @@ function Movies(props) {
   let handleGenreSelect = (genre) => {
     setSelectGenre(genre);
     setCurrentPage(1);
+    setSearchQuery("");
   };
 
   let handleSort = (sortColumnClone) => {
@@ -50,10 +54,13 @@ function Movies(props) {
   };
 
   let getPagedData = () => {
-    const filteredMovies =
-      selectGenre && selectGenre._id
-        ? movies.filter((m) => m.genre._id === selectGenre._id)
-        : movies;
+    let filteredMovies = movies;
+    if (searchQuery)
+      filteredMovies = movies.filter((m) =>
+        m.title.toLowerCase().startsWith(searchQuery.toLowerCase())
+      );
+    else if (selectGenre && selectGenre._id)
+      filteredMovies = movies.filter((m) => m.genre._id === selectGenre._id);
 
     const sorted = _.orderBy(
       filteredMovies,
@@ -62,6 +69,12 @@ function Movies(props) {
     );
     const moviesPaginate = paginate(sorted, currentPage, pageSize);
     return { totalCount: filteredMovies.length, data: moviesPaginate };
+  };
+
+  let handleSearch = (query) => {
+    setSearchQuery(query);
+    setSelectGenre(null);
+    setCurrentPage(1);
   };
 
   if (movies.length === 0) return <p>There are zero movies in the database</p>;
@@ -87,6 +100,7 @@ function Movies(props) {
           New Movie
         </Link>
         <p>Showing {totalCount} in the database</p>
+        <SearchBox value={searchQuery} onChange={handleSearch} />
         <MoviesTable
           moviesPaginate={data}
           onLike={handleLike}
