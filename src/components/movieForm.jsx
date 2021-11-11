@@ -15,13 +15,6 @@ function MovieForm({ match, history }) {
   };
 
   const [genres, setGenres] = useState([]);
-  useEffect(() => {
-    async function getDataFromDB() {
-      const { data } = await getGenres();
-      setGenres(data);
-    }
-    getDataFromDB();
-  }, []);
 
   let schema = {
     _id: Joi.string(),
@@ -53,20 +46,26 @@ function MovieForm({ match, history }) {
     };
   };
 
-  useEffect(() => {
-    const movieId = match.params.id;
-    if (movieId === "new") return;
-
-    async function getMovieFromDB() {
-      try {
-        const { data: movie } = await getMovie(movieId);
-        const dataStored = mapToViewModel(movie);
-        setData(dataStored);
-      } catch (error) {
-        if (error.response && error.response.status === 404)
-          history.replace("/not-found");
-      }
+  async function getMovieFromDB() {
+    try {
+      const movieId = match.params.id;
+      if (movieId === "new") return;
+      const { data: movie } = await getMovie(movieId);
+      const dataStored = mapToViewModel(movie);
+      setData(dataStored);
+    } catch (error) {
+      if (error.response && error.response.status === 404)
+        history.replace("/not-found");
     }
+  }
+
+  async function getDataFromDB() {
+    const { data } = await getGenres();
+    setGenres(data);
+  }
+
+  useEffect(() => {
+    getDataFromDB();
     getMovieFromDB();
   }, []);
 

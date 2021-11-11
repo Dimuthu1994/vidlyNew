@@ -15,5 +15,15 @@ export function getMovie(movieId) {
 }
 
 export function saveMovie(movie) {
-  return http.put(apiEndpoint + "/" + movie);
+  //movie update
+  //db dont like id property in body
+  // so we have to delete id
+  if (movie._id) {
+    const body = { ...movie };
+    delete body._id;
+    return http.put(apiEndpoint + "/" + movie._id, movie);
+  }
+
+  //movie create
+  return http.post(apiEndpoint, movie);
 }
