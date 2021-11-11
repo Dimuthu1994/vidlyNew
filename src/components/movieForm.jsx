@@ -3,8 +3,8 @@ import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
 import SelectGenre from "./common/selectGenre";
-import { getGenres } from "../services/fakeGenreService";
-import { saveMovie, getMovie } from "../services/fakeMovieService";
+import { getGenres } from "../services/genreService";
+import { saveMovie, getMovie } from "../services/movieService";
 
 function MovieForm({ match, history }) {
   const dataInit = {
@@ -14,7 +14,14 @@ function MovieForm({ match, history }) {
     dailyRentalRate: "",
   };
 
-  const [genres, setGenres] = useState(getGenres());
+  const [genres, setGenres] = useState([]);
+  useEffect(() => {
+    async function getDataFromDB() {
+      const { data } = await getGenres();
+      setGenres(data);
+    }
+    getDataFromDB();
+  }, []);
 
   let schema = {
     _id: Joi.string(),
@@ -49,22 +56,30 @@ function MovieForm({ match, history }) {
   useEffect(() => {
     const movieId = match.params.id;
     if (movieId === "new") return;
-    const movie = getMovie(movieId);
-    if (!movie) return history.replace("/not-found");
-    const dataStored = mapToViewModel(movie);
-    setData(dataStored);
+
+    async function getMovieFromDB() {
+      try {
+        const { data: movie } = await getMovie(movieId);
+        const dataStored = mapToViewModel(movie);
+        setData(dataStored);
+      } catch (error) {
+        if (error.response && error.response.status === 404)
+          history.replace("/not-found");
+      }
+    }
+    getMovieFromDB();
   }, []);
 
-  let doSubmit = () => {
+  let doSubmit = async () => {
     //call the server
-    saveMovie(data);
+    await saveMovie(data);
     console.log("submitted");
     history.push("/movies");
   };
 
   return (
     <div>
-      <h1>MovieForm {match.params.id}</h1>
+      <h1>MovieForm</h1>
 
       <form onSubmit={handleSubmit}>
         <Input

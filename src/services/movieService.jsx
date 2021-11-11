@@ -9,3 +9,11 @@ export function getMovies() {
 export function deleteMovie(movieId) {
   return http.delete(apiEndpoint + "/" + movieId);
 }
+
+export function getMovie(movieId) {
+  return http.get(apiEndpoint + "/" + movieId);
+}
+
+export function saveMovie(movie) {
+  return http.put(apiEndpoint + "/" + movie);
+}
