@@ -7,10 +7,13 @@ import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
 import { Route, Redirect, Switch } from "react-router-dom";
 import NavBar from "./components/common/navBar";
+import { ToastContainer } from "react-toastify";
+import "react-toastify/dist/ReactToastify.css";
 
 function App() {
   return (
     <>
+      <ToastContainer />
       <NavBar />
       <main className="container">
         <Switch>

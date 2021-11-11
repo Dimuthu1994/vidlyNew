@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from "react";
 import { getMovies } from "../services/fakeMovieService";
-import { getGenres } from "../services/fakeGenreService";
+import { getGenres } from "../services/genreService";
 import _ from "lodash";
 import Pagination from "./common/pagination";
 import { paginate } from "../utils/paginate";
@@ -21,8 +21,15 @@ function Movies(props) {
   let pageSize = 4;
 
   useEffect(() => {
-    const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
-    setGenres(genres);
+    //new function returns a promise we cant spread it like this
+    //const genres = [{ _id: "", name: "All Genres" }, ...getGenres()];
+    async function getDataFromDB() {
+      const { data } = await getGenres();
+      const genres = [{ _id: "", name: "All Genres" }, ...data];
+      setGenres(genres);
+    }
+
+    getDataFromDB();
   }, []);
 
   let handleDelete = (id) => {
