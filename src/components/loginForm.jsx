@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import { login } from "../services/authService";
 
 function LoginForm(props) {
   const [dataInit, setDataInit] = useState({ username: "", password: "" });
@@ -9,14 +10,24 @@ function LoginForm(props) {
     username: Joi.string().required().label("Username"),
     password: Joi.string().required().label("Password"),
   };
-  const { handleSubmit, handleChange, data, errors, validate } = Form({
-    dataInit,
-    schema,
-  });
+  const { handleSubmit, handleChange, data, errors, validate, setErrors } =
+    Form({
+      dataInit,
+      schema,
+    });
 
-  let doSubmit = () => {
+  let doSubmit = async () => {
     //call the server
-    console.log("submitted");
+
+    try {
+      await login(data.username, data.password);
+    } catch (ex) {
+      if (ex.response && ex.response.status === 400) {
+        const errorsNew = { ...errors };
+        errorsNew.username = ex.response.data;
+        setErrors(errorsNew);
+      }
+    }
   };
 
   return (

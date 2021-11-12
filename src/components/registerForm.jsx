@@ -20,8 +20,7 @@ function RegisterForm(props) {
       dataInit,
       schema,
     });
-  //const [errorsNew, setErrorsNew] = useState(errors);
-  // console.log(errorsNew);
+
   let doSubmit = async () => {
     //call the server
     try {
