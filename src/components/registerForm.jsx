@@ -24,7 +24,9 @@ function RegisterForm(props) {
   let doSubmit = async () => {
     //call the server
     try {
-      await register(data);
+      const response = await register(data);
+      localStorage.setItem("token", response.headers["x-auth-token"]);
+      props.history.push("/");
     } catch (ex) {
       //mulinma balano postman ekan ekama data eka deparak yawwama
       // ena error eka
