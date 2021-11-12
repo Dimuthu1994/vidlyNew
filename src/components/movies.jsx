@@ -10,7 +10,7 @@ import MoviesTable from "./moviesTable";
 import { Link } from "react-router-dom";
 import { toast } from "react-toastify";
 
-function Movies(props) {
+function Movies({ user }) {
   let [movies, setMovies] = useState([]);
   let [genres, setGenres] = useState([]);
 
@@ -112,13 +112,15 @@ function Movies(props) {
       </div>
 
       <div className="col">
-        <Link
-          className="btn btn-primary"
-          to="/movies/new"
-          style={{ marginBottom: 20 }}
-        >
-          New Movie
-        </Link>
+        {user && (
+          <Link
+            className="btn btn-primary"
+            to="/movies/new"
+            style={{ marginBottom: 20 }}
+          >
+            New Movie
+          </Link>
+        )}
         <p>Showing {totalCount} in the database</p>
         <SearchBox value={searchQuery} onChange={handleSearch} />
         <MoviesTable
