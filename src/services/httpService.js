@@ -1,9 +1,7 @@
 import axios from "axios";
 import logger from "./logService";
 import { toast } from "react-toastify";
-import { getJwt } from "./authService";
-
-axios.defaults.headers.common["x-auth-token"] = getJwt();
+//import { getJwt } from "./authService";
 
 axios.interceptors.response.use(null, (error) => {
   const expectedError =
@@ -19,6 +17,10 @@ axios.interceptors.response.use(null, (error) => {
   return Promise.reject(error);
 });
 
+function setJwt(jwt) {
+  axios.defaults.headers.common["x-auth-token"] = jwt;
+}
+
 export default {
   //methana thami axios import krala thinne
   // ithin axios ekn thami mewa ganne
@@ -26,4 +28,5 @@ export default {
   post: axios.post,
   put: axios.put,
   delete: axios.delete,
+  setJwt,
 };
