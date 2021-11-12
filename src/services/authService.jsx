@@ -16,6 +16,10 @@ export function loginWithJwt(jwt) {
   localStorage.setItem("token", jwt);
 }
 
+export function getJwt() {
+  return localStorage.getItem("token");
+}
+
 export function getCurrentUser() {
   try {
     const jwt = localStorage.getItem("token");
