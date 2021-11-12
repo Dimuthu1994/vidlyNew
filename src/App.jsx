@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import auth from "./services/authService";
 import { useState, useEffect } from "react";
+import Logout from "./components/logout";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -31,6 +32,7 @@ function App() {
       <main className="container">
         <Switch>
           <Route path="/login" component={LoginForm}></Route>
+          <Route path="/logout" component={Logout}></Route>
           <Route path="/register" component={RegisterForm}></Route>
           <Route path="/movies/:id" component={MovieForm}></Route>
           {/* <Route path="/movies/new" component={MovieForm}></Route> */}
