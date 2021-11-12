@@ -19,8 +19,8 @@ function LoginForm(props) {
   let doSubmit = async () => {
     //call the server
     try {
-      const { data: jwt } = await login(data.username, data.password);
-      localStorage.setItem("token", jwt);
+      await login(data.username, data.password);
+
       //props.history.push("/");
       //if we go to login page and login with valid username password
       //we get redirected to homepage hower we still see login and register page

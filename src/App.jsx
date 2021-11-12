@@ -5,24 +5,20 @@ import NotFound from "./components/notFound";
 import MovieForm from "./components/movieForm";
 import LoginForm from "./components/loginForm";
 import RegisterForm from "./components/registerForm";
-import jwtDecode from "jwt-decode";
+import Logout from "./components/logout";
 import { Route, Redirect, Switch } from "react-router-dom";
 import NavBar from "./components/common/navBar";
 import { ToastContainer } from "react-toastify";
+import { getCurrentUser } from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
-import auth from "./services/authService";
 import { useState, useEffect } from "react";
-import Logout from "./components/logout";
 
 function App() {
   const [user, setUser] = useState(null);
 
   useEffect(() => {
-    try {
-      const jwt = localStorage.getItem("token");
-      const user = jwtDecode(jwt);
-      setUser(user);
-    } catch (error) {}
+    const findUser = getCurrentUser();
+    setUser(findUser);
   }, []);
 
   return (

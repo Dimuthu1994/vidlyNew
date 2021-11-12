@@ -3,6 +3,7 @@ import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
 import { register } from "../services/userService";
+import { loginWithJwt } from "../services/authService";
 
 function RegisterForm(props) {
   const [dataInit, setDataInit] = useState({
@@ -25,7 +26,7 @@ function RegisterForm(props) {
     //call the server
     try {
       const response = await register(data);
-      localStorage.setItem("token", response.headers["x-auth-token"]);
+      loginWithJwt(response.headers["x-auth-token"]);
 
       window.location = "/";
     } catch (ex) {
