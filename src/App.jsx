@@ -12,6 +12,7 @@ import { ToastContainer } from "react-toastify";
 import { getCurrentUser } from "./services/authService";
 import "react-toastify/dist/ReactToastify.css";
 import { useState, useEffect } from "react";
+import ProtectedRoutes from "./components/common/protectedRoutes";
 
 function App() {
   const [user, setUser] = useState(null);
@@ -30,13 +31,8 @@ function App() {
           <Route path="/login" component={LoginForm}></Route>
           <Route path="/logout" component={Logout}></Route>
           <Route path="/register" component={RegisterForm}></Route>
-          <Route
-            path="/movies/:id"
-            render={(props) => {
-              if (!user) return <Redirect to="/login" />;
-              return <MovieForm {...props} />;
-            }}
-          ></Route>
+          <ProtectedRoutes path="/movies/:id" component={MovieForm} />
+
           {/* <Route path="/movies/new" component={MovieForm}></Route> */}
           <Route
             path="/movies"
