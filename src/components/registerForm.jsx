@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
+import { register } from "../services/userService";
 
 function RegisterForm(props) {
   const [dataInit, setDataInit] = useState({
@@ -14,14 +15,30 @@ function RegisterForm(props) {
     password: Joi.string().required().min(5).label("Password"),
     name: Joi.string().required().label("Name"),
   };
-  const { handleSubmit, handleChange, data, errors, validate } = Form({
-    dataInit,
-    schema,
-  });
-
-  let doSubmit = () => {
+  const { handleSubmit, handleChange, data, errors, validate, setErrors } =
+    Form({
+      dataInit,
+      schema,
+    });
+  //const [errorsNew, setErrorsNew] = useState(errors);
+  // console.log(errorsNew);
+  let doSubmit = async () => {
     //call the server
-    console.log("submitted");
+    try {
+      await register(data);
+    } catch (ex) {
+      //mulinma balano postman ekan ekama data eka deparak yawwama
+      // ena error eka
+      // User is already register kila eno
+      // enm api error object eka aran
+      // error object eke username ekata response eke data eka danna ona
+      // ita passe eka set karanna ona
+      if (ex.response && ex.response.status === 400) {
+        const errorsNew = { ...errors };
+        errorsNew.username = ex.response.data;
+        setErrors(errorsNew);
+      }
+    }
   };
 
   return (
