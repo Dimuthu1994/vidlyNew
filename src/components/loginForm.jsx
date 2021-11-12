@@ -2,7 +2,8 @@ import React, { useState } from "react";
 import Input from "./common/input";
 import Form from "./common/form";
 import Joi from "joi-browser";
-import { login } from "../services/authService";
+import { Redirect } from "react-router-dom";
+import { login, getCurrentUser } from "../services/authService";
 
 function LoginForm(props) {
   const [dataInit, setDataInit] = useState({ username: "", password: "" });
@@ -30,7 +31,8 @@ function LoginForm(props) {
       // during lifecycle of application
 
       //instead of histry we use fullreload
-      window.location = "/";
+      const { state } = props.location;
+      window.location = state ? state.from.pathname : "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errorsNew = { ...errors };
@@ -39,7 +41,7 @@ function LoginForm(props) {
       }
     }
   };
-
+  if (getCurrentUser()) return <Redirect to="/" />;
   return (
     <div>
       <h1>Login</h1>
