@@ -18,9 +18,10 @@ function LoginForm(props) {
 
   let doSubmit = async () => {
     //call the server
-
     try {
-      await login(data.username, data.password);
+      const { data: jwt } = await login(data.username, data.password);
+      localStorage.setItem("token", jwt);
+      props.history.push("/");
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errorsNew = { ...errors };
