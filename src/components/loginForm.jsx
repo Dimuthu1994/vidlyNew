@@ -21,7 +21,16 @@ function LoginForm(props) {
     try {
       const { data: jwt } = await login(data.username, data.password);
       localStorage.setItem("token", jwt);
-      props.history.push("/");
+      //props.history.push("/");
+      //if we go to login page and login with valid username password
+      //we get redirected to homepage hower we still see login and register page
+      //but if we refresh the page problem goes away
+      // in app component we get jswn webtoken from local storage
+      // and decode it in component didmount this method call only once
+      // during lifecycle of application
+
+      //instead of histry we use fullreload
+      window.location = "/";
     } catch (ex) {
       if (ex.response && ex.response.status === 400) {
         const errorsNew = { ...errors };

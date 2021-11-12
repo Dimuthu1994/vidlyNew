@@ -26,7 +26,8 @@ function RegisterForm(props) {
     try {
       const response = await register(data);
       localStorage.setItem("token", response.headers["x-auth-token"]);
-      props.history.push("/");
+
+      window.location = "/";
     } catch (ex) {
       //mulinma balano postman ekan ekama data eka deparak yawwama
       // ena error eka
